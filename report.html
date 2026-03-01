@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spending Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>Finance<span>Tracker</span></h1>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="income.html">Income History</a></li>
+            <li><a href="report.html" class="active">Spending Report</a></li>
+        </ul>
+        <button onclick="masterReset()" class="master-reset-btn">RESET ALL DATA</button>
+    </nav>
+
+    <main class="content">
+        <header><h1>Spending Report</h1></header>
+
+        <div class="filter-bar card">
+            <select id="filter-year" onchange="renderSpendingPage()" style="width: auto; flex: 1;"></select>
+            <select id="filter-month" onchange="renderSpendingPage()" style="width: auto; flex: 1;">
+                <option value="all">All Months</option>
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+            </select>
+            <select id="category-search-dropdown" onchange="renderSpendingPage()" style="width: auto; flex: 1;">
+                <option value="all">All Categories</option>
+            </select>
+            
+            <div class="total-badge">
+                Total: <span id="period-total">0.00</span> AED
+            </div>
+        </div>
+
+        <div id="report-container"></div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>window.onload = () => { autoPopulateYears(); populateSearchDropdown(); renderSpendingPage(); };</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="desktop-layout">
+
+    <nav class="sidebar">
+        <h1>Finance<span>Tracker</span></h1>
+        <ul>
+            <li><a href="index.html" class="active">Dashboard</a></li>
+            <li><a href="income.html">Income History</a></li>
+            <li><a href="report.html">Spending Report</a></li>
+        </ul>
+        <button onclick="masterReset()" class="master-reset-btn">RESET ALL DATA</button>
+    </nav>
+
+    <main class="content">
+        <header>
+            <h1>Welcome Back</h1>
+            <p>Here is your current financial overview.</p>
+        </header>
+
+        <div class="horizontal-grid">
+            <div class="col-main">
+                <div class="card chart-box">
+                    <canvas id="budgetChart"></canvas>
+                    <div class="chart-overlay">
+                        <small>Available</small>
+                        <h2 id="chart-balance">0.00 AED</h2>
+                    </div>
+                </div>
+
+                <div class="balance-row">
+                    <div class="card balance-card">
+                        <h3>Total Balance</h3>
+                        <p id="total-balance" class="amount-text-blue">0.00 AED</p>
+                    </div>
+                    <div class="card balance-card">
+                        <h3>Savings</h3>
+                        <p id="savings-balance" class="amount-text-green">0.00 AED</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-side">
+                <div class="card action-selector">
+                    <h3>Quick Actions</h3>
+                    <div class="button-grid">
+                    <button onclick="showSection('income-section')" class="btn-blue">+ Income</button>
+                    <button onclick="showSection('expense-section')" class="btn-pink">- Spend</button>
+                    <button onclick="showSection('savings-section')" class="btn-sage">± Savings</button>
+                    <button onclick="showSection('category-section')" class="btn-lavender">+ Category</button>
+                </div>
+                </div>
+
+                <div id="form-container">
+                    <section id="income-section" class="hidden card">
+                        <h3>Add Income</h3>
+                        <input type="number" id="income-amount" placeholder="Amount (AED)">
+                        <button onclick="addIncome()" class="btn-sage">Record</button>
+                    </section>
+
+                    <section id="savings-section" class="hidden card">
+                        <h3>Manage Savings</h3>
+                        <input type="number" id="savings-amount" placeholder="Amount (AED)">
+                        <div class="button-group-side">
+                            <button onclick="adjustSavings('add')" class="btn-sage">Add to Savings</button>
+                            <button onclick="adjustSavings('sub')" class="btn-pink">Back to Balance</button>
+                        </div>
+                    </section>
+
+                    <section id="expense-section" class="hidden card">
+                        <h3>Log Spending</h3>
+                        <select id="expense-category"></select>
+                        <input type="text" id="expense-note" placeholder="What for?">
+                        <input type="date" id="expense-date">
+                        <input type="number" id="expense-amount" placeholder="Price (AED)">
+                        <button onclick="addExpense()" class="btn-pink">Record Spend</button>
+                    </section>
+
+                    <section id="category-section" class="hidden card">
+                        <h3>Manage Categories</h3>
+                        <input type="text" id="new-category-name" placeholder="Category Name">
+                        <button onclick="addNewCategory()" class="btn-lavender">Create</button>
+                        <div id="category-delete-list"></div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

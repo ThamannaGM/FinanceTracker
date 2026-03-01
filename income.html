@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income History</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="desktop-layout">
+    <nav class="sidebar">
+        <h1>Finance<span>Tracker</span></h1>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="income.html" class="active">Income History</a></li>
+            <li><a href="report.html">Spending Report</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header>
+            <h1>Income History</h1>
+        </header>
+        <div class="card wide-card">
+            <div id="income-report-container"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>window.onload = renderIncomePage;</script>
+</body>
+</html>

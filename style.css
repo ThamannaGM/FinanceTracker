@@ -1,0 +1,269 @@
+body { 
+    margin: 0; 
+    font-family: 'Segoe UI', sans-serif; 
+    background: #fdf6f6; 
+    display: flex; }
+
+.sidebar {
+    width: 260px;
+    height: 100vh;  
+    background: white;
+    padding: 30px;
+    position: fixed;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+}
+
+.sidebar ul { 
+    list-style: none; 
+    padding: 0; 
+    margin-bottom: 20px; 
+}
+
+.master-reset-btn { 
+    background: transparent; 
+    color: #b04759; 
+    border: 1px solid #ffeaee; 
+    padding: 10px; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 0.75rem; 
+    letter-spacing: 0.5px;
+    margin-top: auto; 
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.master-reset-btn:hover {
+    background: #b04759; 
+    color: white;
+}
+
+.sidebar h1 { 
+    color: #f1a7b9; 
+    margin-bottom: 40px; 
+}
+
+.sidebar h1 span { 
+    color: #a8b79a; 
+    font-weight: 300; 
+}
+
+.sidebar li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #888;
+    font-weight: bold;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.sidebar li a.active, .sidebar li a:hover { 
+    background: #f1a7b9; 
+    color: white; 
+}
+
+
+.content { 
+    margin-left: 320px; 
+    padding: 40px; 
+    flex-grow: 1; 
+    max-width: 1200px; 
+}
+
+.horizontal-grid { 
+    display: flex; 
+    gap: 30px; 
+    align-items: flex-start; 
+}
+
+.col-main { 
+    flex: 1.5; 
+}
+
+.col-side { 
+    flex: 1; 
+}
+
+.card { 
+    background: white; 
+    padding: 25px; border-radius: 30px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03); 
+    margin-bottom: 25px; 
+    box-sizing: border-box; 
+}
+
+.amount-text-green { 
+    color: #a8b79a; 
+    font-weight: bold; 
+    font-size: 1.4rem; 
+}
+
+.amount-text-blue { 
+    color: #8fa6cb; 
+    font-weight: bold; 
+    font-size: 1.4rem; 
+}
+
+.chart-box { 
+    position: relative; 
+    height: 350px; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.chart-overlay { 
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-40%); 
+    text-align: center; 
+}
+
+.balance-row { 
+    display: flex; 
+    gap: 20px; 
+}
+
+.balance-card { 
+    flex: 1; 
+    text-align: center; 
+}
+
+.button-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+
+.button-group-side { 
+    display: flex; 
+    gap: 10px; 
+}
+
+button { 
+    border-radius: 12px; 
+    border: none; 
+    padding: 12px; 
+    width: 100%; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 0.9rem; 
+}
+
+.btn-sage { 
+    background: #a8b79a; 
+    color: white; 
+}
+
+.btn-pink { 
+    background: #f1a7b9; 
+    color: white; 
+}
+
+.btn-blue { 
+    background: #8fa6cb; 
+    color: white; 
+}
+
+.btn-lavender { 
+    background: #b8afc2; 
+    color: white; 
+}
+
+.category-block { 
+    background: white; 
+    padding: 25px; 
+    border-radius: 25px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+}
+
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+td, th { 
+    padding: 15px; 
+    text-align: left; 
+    border-bottom: 1px solid #f9f9f9; 
+}
+
+.total-row { 
+    display: flex; 
+    justify-content: space-between; 
+    font-weight: bold; 
+    padding: 15px; 
+    background: #fafafa; 
+    border-radius: 12px; 
+    margin-top: 10px; 
+}
+
+.filter-bar { 
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+}
+
+.total-badge { 
+    margin-left: auto; 
+    background: #f1a7b9; 
+    color: white; 
+    padding: 12px 25px; 
+    border-radius: 15px; 
+    font-weight: bold; 
+    white-space: nowrap; 
+}
+
+input, select { 
+    border-radius: 12px; 
+    border: 1px solid #eee; 
+    padding: 12px; 
+    width: 100%; 
+    box-sizing: border-box; 
+    margin-bottom: 10px; 
+}
+
+.hidden { 
+    display: none; 
+}
+
+.del-btn { 
+    color: #f1a7b9; 
+    cursor: pointer; 
+    font-weight: bold; 
+    padding: 0 10px; 
+}
+
+.btn-lavender:hover {
+    background-color: #a399ad; 
+    transition: background 0.3s ease; 
+    cursor: pointer;
+}
+
+.category-block td span:hover {
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.inline-edit-input {
+    border: 1px solid #d1cbd6; /* Using your muted lavender */
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    background: white;
+}
+
+/* Ensure the cell doesn't "jump" when the input appears */
+td[onclick] {
+    min-width: 50px;
+    transition: background 0.2s;
+}   
