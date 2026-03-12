@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income History</title>
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body class="desktop-layout">
     <nav class="sidebar">
@@ -13,9 +14,15 @@
             <li><a href="index.html">Dashboard</a></li>
             <li><a href="income.html" class="active">Income History</a></li>
             <li><a href="report.html">Spending Report</a></li>
+            <li><a href="goals.html">Savings Goals</a></li>
         </ul>
+        <div class="sidebar-user">
+            <small id="user-email" style="color:#bbb; font-size:0.75rem; word-break:break-all;"></small>
+            <button onclick="logout()" class="logout-btn">Sign Out</button>
+        </div>
     </nav>
 
+    <button class="mobile-signout" onclick="logout()">Sign Out</button>
     <main class="content">
         <header>
             <h1>Income History</h1>
@@ -26,6 +33,5 @@
     </main>
 
     <script src="script.js"></script>
-    <script>window.onload = renderIncomePage;</script>
 </body>
 </html>
