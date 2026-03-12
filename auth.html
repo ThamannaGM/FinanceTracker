@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Sign In</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #fdf6f6; margin: 0; }
+        .auth-wrapper { width: 100%; max-width: 420px; padding: 20px; }
+        .auth-logo { text-align: center; margin-bottom: 32px; }
+        .auth-logo h1 { font-size: 2rem; color: #f1a7b9; margin: 0; }
+        .auth-logo h1 span { color: #a8b79a; font-weight: 300; }
+        .auth-logo p { color: #aaa; margin: 8px 0 0; font-size: 0.9rem; }
+        .auth-card { background: white; border-radius: 30px; padding: 36px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+        .auth-card h2 { margin: 0 0 8px; color: #333; font-size: 1.4rem; }
+        .auth-card .subtitle { color: #aaa; font-size: 0.88rem; margin-bottom: 28px; }
+        .auth-card input { border-radius: 12px; border: 1.5px solid #eee; padding: 13px 15px; width: 100%; box-sizing: border-box; margin-bottom: 12px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; outline: none; }
+        .auth-card input:focus { border-color: #f1a7b9; }
+        .auth-card .btn-primary { background: #f1a7b9; color: white; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 0.95rem; font-weight: bold; cursor: pointer; margin-top: 4px; transition: background 0.2s; }
+        .auth-card .btn-primary:hover { background: #e891a8; }
+        .auth-card .btn-primary:disabled { background: #ecc9d3; cursor: not-allowed; }
+        .auth-switch { text-align: center; margin-top: 20px; font-size: 0.88rem; color: #aaa; }
+        .auth-switch a { color: #f1a7b9; text-decoration: none; font-weight: bold; cursor: pointer; }
+        .error-msg { background: #fff0f3; color: #c0394e; border-radius: 10px; padding: 11px 14px; font-size: 0.85rem; margin-bottom: 14px; display: none; }
+        .success-msg { background: #f0f7ee; color: #5a8a48; border-radius: 10px; padding: 11px 14px; font-size: 0.85rem; margin-bottom: 14px; display: none; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .password-hint { font-size: 0.78rem; color: #bbb; margin-top: -6px; margin-bottom: 12px; }
+        .mode-tabs { display: flex; gap: 0; margin-bottom: 28px; background: #fdf6f6; border-radius: 12px; padding: 4px; }
+        .mode-tab { flex: 1; padding: 10px; text-align: center; border-radius: 10px; font-weight: bold; font-size: 0.88rem; cursor: pointer; color: #aaa; transition: all 0.2s; user-select: none; }
+        .mode-tab.active { background: white; color: #f1a7b9; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .password-wrapper { position: relative; margin-bottom: 12px; display: block; }
+        .password-wrapper input { margin-bottom: 0 !important; padding-right: 46px !important; }
+        .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 4px; width: auto; cursor: pointer; color: #ccc; line-height: 0; transition: color 0.2s; display: flex; align-items: center; justify-content: center; }
+        .password-toggle:hover { color: #f1a7b9; }
+        .password-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .local-notice { background: #fdf6f6; border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: #aaa; margin-bottom: 16px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-logo">
+            <h1>Finance<span>Tracker</span></h1>
+            <p>Your personal money companion</p>
+        </div>
+
+        <div class="auth-card">
+            <div class="mode-tabs" id="mode-tabs">
+                <div class="mode-tab active" onclick="switchMode('login')">Sign In</div>
+                <div class="mode-tab" onclick="switchMode('register')">Create Account</div>
+            </div>
+
+            <div id="error-msg" class="error-msg"></div>
+            <div id="success-msg" class="success-msg"></div>
+
+            <!-- LOGIN -->
+            <div id="login-flow">
+                <div class="step active" id="login-step">
+                    <div class="local-notice">🔒 Your data is stored locally on this device.</div>
+                    <input type="text" id="login-username" placeholder="Username" autocomplete="username">
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+                        <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    </div>
+                    <button class="btn-primary" onclick="doLogin()">Sign In</button>
+                </div>
+            </div>
+
+            <!-- REGISTER -->
+            <div id="register-flow" style="display:none;">
+                <div class="step active" id="reg-step">
+                    <h2>Create your account</h2>
+                    <p class="subtitle">All data is saved locally on this device.</p>
+                    <input type="text" id="reg-username" placeholder="Username (e.g. Sarah)" autocomplete="username">
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-password" placeholder="Password" autocomplete="new-password">
+                        <button type="button" class="password-toggle" onclick="togglePassword('reg-password', this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-password2" placeholder="Confirm password" autocomplete="new-password">
+                        <button type="button" class="password-toggle" onclick="togglePassword('reg-password2', this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    </div>
+                    <p class="password-hint">At least 6 characters</p>
+                    <button class="btn-primary" onclick="doRegister()">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Helpers ───────────────────────────────────────────────────────────
+        function showError(msg) {
+            const el = document.getElementById("error-msg");
+            el.textContent = msg; el.style.display = "block";
+            document.getElementById("success-msg").style.display = "none";
+        }
+        function showSuccess(msg) {
+            const el = document.getElementById("success-msg");
+            el.textContent = msg; el.style.display = "block";
+            document.getElementById("error-msg").style.display = "none";
+        }
+        function clearMessages() {
+            document.getElementById("error-msg").style.display = "none";
+            document.getElementById("success-msg").style.display = "none";
+        }
+
+        function switchMode(mode) {
+            clearMessages();
+            document.getElementById("login-flow").style.display = mode === "login" ? "block" : "none";
+            document.getElementById("register-flow").style.display = mode === "register" ? "block" : "none";
+            document.querySelectorAll(".mode-tab").forEach((t, i) => {
+                t.classList.toggle("active", (i === 0 && mode === "login") || (i === 1 && mode === "register"));
+            });
+        }
+
+        const EYE_OPEN = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+        const EYE_SHUT = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+            btn.innerHTML = isHidden ? EYE_SHUT : EYE_OPEN;
+            btn.style.color = isHidden ? "#f1a7b9" : "#ccc";
+        }
+
+        // ── Simple hash (not cryptographic, just basic obfuscation) ──────────
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(36);
+        }
+
+        // ── Auth storage helpers ──────────────────────────────────────────────
+        function getAccounts() {
+            return JSON.parse(localStorage.getItem("ft_accounts") || "{}");
+        }
+        function saveAccounts(accounts) {
+            localStorage.setItem("ft_accounts", JSON.stringify(accounts));
+        }
+
+        // ── Login ─────────────────────────────────────────────────────────────
+        function doLogin() {
+            clearMessages();
+            const username = document.getElementById("login-username").value.trim();
+            const password = document.getElementById("login-password").value;
+            if (!username || !password) { showError("Please fill in all fields."); return; }
+
+            const accounts = getAccounts();
+            const account = accounts[username.toLowerCase()];
+            if (!account || account.passwordHash !== simpleHash(password)) {
+                showError("Invalid username or password."); return;
+            }
+
+            localStorage.setItem("ft_current_user", username.toLowerCase());
+            localStorage.setItem("ft_username", account.displayName);
+            window.location.href = "index.html";
+        }
+
+        // ── Register ──────────────────────────────────────────────────────────
+        function doRegister() {
+            clearMessages();
+            const username = document.getElementById("reg-username").value.trim();
+            const password = document.getElementById("reg-password").value;
+            const password2 = document.getElementById("reg-password2").value;
+
+            if (!username) { showError("Please enter a username."); return; }
+            if (password.length < 6) { showError("Password must be at least 6 characters."); return; }
+            if (password !== password2) { showError("Passwords do not match."); return; }
+
+            const accounts = getAccounts();
+            if (accounts[username.toLowerCase()]) {
+                showError("That username is already taken."); return;
+            }
+
+            accounts[username.toLowerCase()] = {
+                displayName: username,
+                passwordHash: simpleHash(password),
+                createdAt: new Date().toISOString()
+            };
+            saveAccounts(accounts);
+
+            // Initialise empty finance data for this user
+            const dataKey = `ft_data_${username.toLowerCase()}`;
+            if (!localStorage.getItem(dataKey)) {
+                localStorage.setItem(dataKey, JSON.stringify({
+                    balance: 0, savings: 0, categories: [], transactions: [],
+                    incomeHistory: [], savingsGoals: [], recurringTransactions: []
+                }));
+            }
+
+            localStorage.setItem("ft_current_user", username.toLowerCase());
+            localStorage.setItem("ft_username", username);
+            localStorage.removeItem("ft_onboarding_done");
+            window.location.href = "index.html";
+        }
+
+        // ── Redirect if already logged in ─────────────────────────────────────
+        if (localStorage.getItem("ft_current_user")) {
+            window.location.href = "index.html";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const loginVisible = document.getElementById("login-flow").style.display !== "none";
+                if (loginVisible) doLogin();
+                else doRegister();
+            }
+        });
+    </script>
+</body>
+</html>
