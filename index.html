@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance Tracker - Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="desktop-layout">
@@ -15,13 +16,19 @@
             <li><a href="index.html" class="active">Dashboard</a></li>
             <li><a href="income.html">Income History</a></li>
             <li><a href="report.html">Spending Report</a></li>
+            <li><a href="goals.html">Savings Goals</a></li>
         </ul>
+        <div class="sidebar-user">
+            <small id="user-email" style="color:#bbb; font-size:0.75rem; word-break:break-all;"></small>
+            <button onclick="logout()" class="logout-btn">Sign Out</button>
+        </div>
         <button onclick="masterReset()" class="master-reset-btn">RESET ALL DATA</button>
     </nav>
 
+    <button class="mobile-signout" onclick="logout()">Sign Out</button>
     <main class="content">
         <header>
-            <h1>Welcome Back</h1>
+            <h1>Welcome Back, <span id="welcome-username"></span>!</h1>
             <p>Here is your current financial overview.</p>
         </header>
 
@@ -51,11 +58,11 @@
                 <div class="card action-selector">
                     <h3>Quick Actions</h3>
                     <div class="button-grid">
-                    <button onclick="showSection('income-section')" class="btn-blue">+ Income</button>
-                    <button onclick="showSection('expense-section')" class="btn-pink">- Spend</button>
-                    <button onclick="showSection('savings-section')" class="btn-sage">± Savings</button>
-                    <button onclick="showSection('category-section')" class="btn-lavender">+ Category</button>
-                </div>
+                        <button onclick="showSection('income-section')" class="btn-blue">+ Income</button>
+                        <button onclick="showSection('expense-section')" class="btn-pink">- Spend</button>
+                        <button onclick="showSection('savings-section')" class="btn-sage">± Savings</button>
+                        <button onclick="showSection('category-section')" class="btn-lavender">+ Category</button>
+                    </div>
                 </div>
 
                 <div id="form-container">
@@ -76,11 +83,32 @@
 
                     <section id="expense-section" class="hidden card">
                         <h3>Log Spending</h3>
-                        <select id="expense-category"></select>
-                        <input type="text" id="expense-note" placeholder="What for?">
+                        <select id="expense-category" onchange="updateNoteSuggestions()"></select>
+                        <input type="text" id="expense-note" placeholder="What for?" list="note-suggestions" autocomplete="off">
+                        <datalist id="note-suggestions"></datalist>
                         <input type="date" id="expense-date">
                         <input type="number" id="expense-amount" placeholder="Price (AED)">
+
+                        <!-- Primary action -->
                         <button onclick="addExpense()" class="btn-pink">Record Spend</button>
+
+                        <!-- Divider -->
+                        <div class="recurring-divider">
+                            <span>or</span>
+                        </div>
+
+                        <!-- Recurring action -->
+                        <button onclick="toggleRecurringFields()" class="btn-recurring-toggle" id="recurring-open-btn">
+                            🔁 Set as Monthly Recurring
+                        </button>
+
+                        <div id="recurring-fields" class="hidden recurring-fields-box">
+                            <p class="recurring-fields-hint">Which day of the month should this auto-log?</p>
+                            <div class="recurring-fields-row">
+                                <input type="number" id="recurring-day" placeholder="Day (1–28)" min="1" max="28">
+                                <button onclick="addRecurring()" class="btn-lavender">Save 🔁</button>
+                            </div>
+                        </div>
                     </section>
 
                     <section id="category-section" class="hidden card">
@@ -90,9 +118,166 @@
                         <div id="category-delete-list"></div>
                     </section>
                 </div>
+
+                <!-- Recurring transactions list -->
+                <div class="card">
+                    <h3 style="margin-bottom:14px;">🔁 Monthly Recurring</h3>
+                    <div id="recurring-list"></div>
+                </div>
+
             </div>
         </div>
     </main>
+
+    <!-- ── Onboarding Slideshow ──────────────────────────────────────────── -->
+    <div class="onboarding-overlay" id="onboarding-overlay" style="display:none;">
+        <div class="onboarding-modal">
+
+            <!-- Progress pips -->
+            <div class="onboarding-progress" id="onboarding-progress"></div>
+
+            <!-- Slide 1: Welcome -->
+            <div class="onboarding-slide active" id="slide-0">
+                <div class="onboarding-icon pink">🌸</div>
+                <h2>Welcome to Finance Tracker!</h2>
+                <p>You're all set up. This quick guide will show you everything you need to know to take control of your money — it only takes a minute.</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-pink"></div>
+                        <span>Track your income, spending, and savings all in one place</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-green"></div>
+                        <span>Your data syncs to your account — access it from anywhere</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-blue"></div>
+                        <span>Everything is private and secured with your password</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Categories -->
+            <div class="onboarding-slide" id="slide-1">
+                <div class="onboarding-icon purple">🏷️</div>
+                <h2>Start with Categories</h2>
+                <p>Categories help you organise where your money goes. Create ones that match your life — Food, Transport, Entertainment, whatever makes sense for you.</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-purple"></div>
+                        <span>Hit <strong>+ Category</strong> on the dashboard to create your first one</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-purple"></div>
+                        <span>Every expense you log gets tagged to a category</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-purple"></div>
+                        <span>The Spending Report groups your transactions by category automatically</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Income & Expenses -->
+            <div class="onboarding-slide" id="slide-2">
+                <div class="onboarding-icon blue">💸</div>
+                <h2>Log Income & Spending</h2>
+                <p>Use the Quick Actions buttons on the dashboard to record money coming in or going out. Every transaction is saved instantly to your account.</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-blue"></div>
+                        <span><strong>+ Income</strong> adds funds to your total balance</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-pink"></div>
+                        <span><strong>− Spend</strong> logs an expense and deducts it from your balance</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-green"></div>
+                        <span><strong>± Savings</strong> moves money between your balance and a separate savings pot</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Savings Goals -->
+            <div class="onboarding-slide" id="slide-3">
+                <div class="onboarding-icon green">🎯</div>
+                <h2>Set Savings Goals</h2>
+                <p>Got something you're saving towards? Create a goal with a target amount and contribute to it from your savings. Watch the progress bar fill up as you get closer.</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-green"></div>
+                        <span>Find <strong>Savings Goals</strong> in the sidebar to create your first goal</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-green"></div>
+                        <span>Contributions come from your savings pot, not your main balance</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-pink"></div>
+                        <span>When you hit 100% you'll get a little celebration 🎉</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Recurring -->
+            <div class="onboarding-slide" id="slide-4">
+                <div class="onboarding-icon blue">🔁</div>
+                <h2>Recurring Transactions</h2>
+                <p>Got fixed monthly expenses like rent, subscriptions, or a gym membership? Mark them as recurring and they'll be auto-logged every month on the date you set.</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-blue"></div>
+                        <span>When logging a spend, tick <strong>Repeat monthly</strong> and enter the day</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-pink"></div>
+                        <span>Each time you open the app, due transactions are auto-logged instantly</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-purple"></div>
+                        <span>Manage or remove recurring entries from the <strong>Monthly Recurring</strong> card on the dashboard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: You're ready -->
+            <div class="onboarding-slide" id="slide-5">
+                <div class="onboarding-icon pink">✨</div>
+                <h2>You're all set!</h2>
+                <p>That's everything. Head to your dashboard and start tracking. Here's a suggested order to get going:</p>
+                <div class="onboarding-tips">
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-purple"></div>
+                        <span><strong>1.</strong> Create a few categories that match your spending</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-blue"></div>
+                        <span><strong>2.</strong> Add your current income or starting balance</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-green"></div>
+                        <span><strong>3.</strong> Set a savings goal to work towards</span>
+                    </div>
+                    <div class="onboarding-tip">
+                        <div class="onboarding-tip-dot dot-pink"></div>
+                        <span><strong>4.</strong> Add any recurring monthly expenses so they auto-log!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer nav -->
+            <div class="onboarding-footer">
+                <span class="onboarding-step-count" id="onboarding-step-count">1 of 5</span>
+                <div class="onboarding-nav">
+                    <button class="onboarding-skip" id="onboarding-skip" onclick="closeOnboarding()">Skip</button>
+                    <button class="onboarding-btn-back" id="onboarding-back" onclick="onboardingBack()" style="display:none;">Back</button>
+                    <button class="onboarding-btn-next" id="onboarding-next" onclick="onboardingNext()">Next →</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
